@@ -1,0 +1,412 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Emgu.CV.OCR</name>
+    </assembly>
+    <members>
+        <member name="T:Emgu.CV.OCR.OcrInvoke">
+            <summary>
+            Library to invoke Tesseract OCR functions
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OCR.PageIterator">
+            <summary>
+            The tesseract page iterator
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageIteratorLevel.Block">
+            <summary>
+            Block of text/image/separator line.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageIteratorLevel.Para">
+            <summary>
+            Paragraph within a block.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageIteratorLevel.Textline">
+            <summary>
+            Line within a paragraph.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageIteratorLevel.Word">
+            <summary>
+            Word within a textline.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageIteratorLevel.Symbol">
+            <summary>
+            Symbol/character within a word.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OCR.Tesseract">
+            <summary>
+            The tesseract OCR engine
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.#ctor">
+            <summary>
+            Create a default tesseract engine. Needed to Call Init function to load language files in a later stage.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.#ctor(System.String,System.String,Emgu.CV.OCR.OcrEngineMode)">
+            <summary>
+            Create an tesseract OCR engine.
+            </summary>
+            <param name="dataPath">
+            The datapath must be the name of the parent directory of tessdata and
+            must end in / . Any name after the last / will be stripped.
+            </param>
+            <param name="language">
+            The language is (usually) an ISO 639-3 string or NULL will default to eng.
+            It is entirely safe (and eventually will be efficient too) to call
+            Init multiple times on the same instance to change language, or just
+            to reset the classifier.
+            The language may be a string of the form [~]%lt;lang&gt;[+[~]&lt;lang&gt;]* indicating
+            that multiple languages are to be loaded. Eg hin+eng will load Hindi and
+            English. Languages may specify internally that they want to be loaded
+            with one or more other languages, so the ~ sign is available to override
+            that. Eg if hin were set to load eng by default, then hin+~eng would force
+            loading only hin. The number of loaded languages is limited only by
+            memory, with the caveat that loading additional languages will impact
+            both speed and accuracy, as there is more work to do to decide on the
+            applicable language, and there is more chance of hallucinating incorrect
+            words.
+            </param>
+            <param name="mode">OCR engine mode</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.#ctor(System.String,System.String,Emgu.CV.OCR.OcrEngineMode,System.String)">
+            <summary>
+            Create an tesseract OCR engine.
+            </summary>
+            <param name="dataPath">
+            The datapath must be the name of the parent directory of tessdata and
+            must end in / . Any name after the last / will be stripped.
+            </param>
+            <param name="language">
+            The language is (usually) an ISO 639-3 string or NULL will default to eng.
+            It is entirely safe (and eventually will be efficient too) to call
+            Init multiple times on the same instance to change language, or just
+            to reset the classifier.
+            The language may be a string of the form [~]%lt;lang&gt;[+[~]&lt;lang&gt;]* indicating
+            that multiple languages are to be loaded. Eg hin+eng will load Hindi and
+            English. Languages may specify internally that they want to be loaded
+            with one or more other languages, so the ~ sign is available to override
+            that. Eg if hin were set to load eng by default, then hin+~eng would force
+            loading only hin. The number of loaded languages is limited only by
+            memory, with the caveat that loading additional languages will impact
+            both speed and accuracy, as there is more work to do to decide on the
+            applicable language, and there is more chance of hallucinating incorrect
+            words.
+            </param>
+            <param name="mode">OCR engine mode</param>
+            <param name="whiteList">This can be used to specify a white list for OCR. e.g. specify "1234567890" to recognize digits only. Note that the white list currently seems to only work with OcrEngineMode.OEM_TESSERACT_ONLY</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.Init(System.String,System.String,Emgu.CV.OCR.OcrEngineMode)">
+            <summary>
+            Initialize the OCR engine using the specific dataPath and language name.
+            </summary>
+            <param name="dataPath">
+            The datapath must be the name of the parent directory of tessdata and
+            must end in / . Any name after the last / will be stripped.
+            </param>
+            <param name="language">
+            The language is (usually) an ISO 639-3 string or NULL will default to eng.
+            It is entirely safe (and eventually will be efficient too) to call
+            Init multiple times on the same instance to change language, or just
+            to reset the classifier.
+            The language may be a string of the form [~]%lt;lang&gt;[+[~]&lt;lang&gt;]* indicating
+            that multiple languages are to be loaded. Eg hin+eng will load Hindi and
+            English. Languages may specify internally that they want to be loaded
+            with one or more other languages, so the ~ sign is available to override
+            that. Eg if hin were set to load eng by default, then hin+~eng would force
+            loading only hin. The number of loaded languages is limited only by
+            memory, with the caveat that loading additional languages will impact
+            both speed and accuracy, as there is more work to do to decide on the
+            applicable language, and there is more chance of hallucinating incorrect
+            words.
+            </param>
+            <param name="mode">OCR engine mode</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.DisposeObject">
+            <summary>
+            Release the unmanaged resource associated with this class
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.Recognize(Emgu.CV.IInputArray)">
+            <param name="image">The image where detection took place</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.SetVariable(System.String,System.String)">
+            <summary>
+            Set the variable to the specific value.
+            </summary>
+            <param name="variableName">The name of the tesseract variable. e.g. use "tessedit_char_blacklist" to black list characters and ""tessedit_char_whitelist" to white list characters</param>
+            <param name="value">The value to be set</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.GetText">
+            <summary>
+            Get all the text in the image
+            </summary>
+            <returns>All the text in the image</returns>
+        </member>
+        <member name="M:Emgu.CV.OCR.Tesseract.GetCharacters">
+            <summary>
+            Detect all the characters in the image.
+            </summary>
+            <returns>All the characters in the image</returns>
+        </member>
+        <member name="P:Emgu.CV.OCR.Tesseract.Version">
+            <summary>
+            Get the tesseract version
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OCR.Tesseract.PageSegMode">
+            <summary>
+            Gets or sets the page seg mode.
+            </summary>
+            <value>
+            The page seg mode.
+            </value>
+        </member>
+        <member name="T:Emgu.CV.OCR.Tesseract.Character">
+            <summary>
+            This represent a character that is detected by the OCR engine
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.Tesseract.Character.Text">
+            <summary>
+            The text
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.Tesseract.Character.Cost">
+            <summary>
+            The cost. The lower it is, the more confident is the result
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.Tesseract.Character.Region">
+            <summary>
+            The region where the character is detected.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OCR.OcrEngineMode">
+            <summary>
+            When Tesseract/Cube is initialized we can choose to instantiate/load/run
+            only the Tesseract part, only the Cube part or both along with the combiner.
+            The preference of which engine to use is stored in tessedit_ocr_engine_mode.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.OcrEngineMode.TesseractOnly">
+            <summary>
+            Run Tesseract only - fastest
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.OcrEngineMode.CubeOnly">
+            <summary>
+            Run Cube only - better accuracy, but slower
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.OcrEngineMode.TesseractCubeCombined">
+            <summary>
+            Run both and combine results - best accuracy
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.OcrEngineMode.Default">
+            <summary>
+            Specify this mode to indicate that any of the above modes
+            should be automatically inferred from the variables in the 
+            language-specific config, or if not specified in any of 
+            the above should be set to the default OEM_TESSERACT_ONLY.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OCR.PageSegMode">
+            <summary>
+            Tesseract page segmentation mode
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.OsdOnly">
+            <summary>
+            PageOrientation and script detection only.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.AutoOsd">
+            <summary>
+            Automatic page segmentation with orientation and script detection. (OSD)
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.AutoOnly">
+            <summary>
+            Automatic page segmentation, but no OSD, or OCR.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.Auto">
+            <summary>
+            Fully automatic page segmentation, but no OSD.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.SingleColumn">
+            <summary>
+            Assume a single column of text of variable sizes.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.SingleBlockVertText">
+            <summary>
+            Assume a single uniform block of vertically aligned text.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.SingleBlock">
+            <summary>
+            Assume a single uniform block of text. (Default.)
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.SingleLine">
+            <summary>
+            Treat the image as a single text line.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.SingleWord">
+            <summary>
+            Treat the image as a single word.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.CircleWord">
+            <summary>
+            Treat the image as a single word in a circle.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.SingleChar">
+            <summary>
+            Treat the image as a single character.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.SparseText">
+            <summary>
+            Find as much text as possible in no particular order.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.SparseTextOsd">
+            <summary>
+            Sparse text with orientation and script det.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.RawLine">
+            <summary>
+            Treat the image as a single text line, bypassing hacks that are Tesseract-specific.
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.PageSegMode.Count">
+            <summary>
+            Number of enum entries.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OCR.TesseractResult">
+            <summary>
+            This structure is primary used for PInvoke
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.TesseractResult.Length">
+            <summary>
+            The length
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.TesseractResult.Cost">
+            <summary>
+            The cost
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OCR.TesseractResult.Region">
+            <summary>
+            The region
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OCR.VectorOfTesseractResult">
+            <summary>
+            Wrapped class of the C++ standard vector of TesseractResult.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor used to deserialize runtime serialized object
+            </summary>
+            <param name="info">The serialization info</param>
+            <param name="context">The streaming context</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            A function used for runtime serialization of the object
+            </summary>
+            <param name="info">Serialization info</param>
+            <param name="context">Streaming context</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.#ctor">
+            <summary>
+            Create an empty standard vector of TesseractResult
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.#ctor(System.Int32)">
+            <summary>
+            Create an standard vector of TesseractResult of the specific size
+            </summary>
+            <param name="size">The size of the vector</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.#ctor(Emgu.CV.OCR.TesseractResult[])">
+            <summary>
+            Create an standard vector of TesseractResult with the initial values
+            </summary>
+            <param name="values">The initial values</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.Push(Emgu.CV.OCR.TesseractResult[])">
+            <summary>
+            Push an array of value into the standard vector
+            </summary>
+            <param name="value">The value to be pushed to the vector</param>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.ToArray">
+            <summary>
+            Convert the standard vector to an array of TesseractResult
+            </summary>
+            <returns>An array of TesseractResult</returns>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.Clear">
+            <summary>
+            Clear the vector
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.DisposeObject">
+            <summary>
+            Release the standard vector
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.GetInputArray">
+            <summary>
+            Get the pointer to cv::_InputArray
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.GetOutputArray">
+            <summary>
+            Get the pointer to cv::_OutputArray
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OCR.VectorOfTesseractResult.GetInputOutputArray">
+            <summary>
+            Get the pointer to cv::_InputOutputArray
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OCR.VectorOfTesseractResult.Size">
+            <summary>
+            Get the size of the vector
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OCR.VectorOfTesseractResult.StartAddress">
+            <summary>
+            The pointer to the first element on the vector. In case of an empty vector, IntPtr.Zero will be returned.
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OCR.VectorOfTesseractResult.Item(System.Int32)">
+            <summary>
+            Get the item in the specific index
+            </summary>
+            <param name="index">The index</param>
+            <returns>The item in the specific index</returns>
+        </member>
+    </members>
+</doc>
